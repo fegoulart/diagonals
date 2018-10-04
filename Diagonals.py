@@ -8,13 +8,11 @@
 
 
 import time
-import math
 import sys
 sys.setrecursionlimit(1000000000)
 
-tree_pointer = 0
 
-def can_be_extended_to_solution(perm,n):
+def can_be_extended_to_solution(perm,n,target):
 
     i = len(perm) - 1
 
@@ -65,13 +63,52 @@ def can_be_extended_to_solution(perm,n):
         if perm[i + 1 - n] == 2 and perm[i] == 2:
             return False
 
+    #verifica se esta completando o array e nao tem o numero de diagonais necessario
+    total = pow(n,2)
+    following_cells = total - len(perm)
+
+    if len(perm) == total:
+        print(perm)
+
+    cont = 0
+    for j in range(len(perm)):
+        if perm[j] != 3:
+            cont = cont + 1
+    if (target > following_cells + cont):
+        return False
+
     return True
 
+def extend(perm,n, target):
+
+    if len(perm) == pow(n,2):
+        print("resposta")
+        print(perm)
+        print "time elapsed: {:.2f}s".format(time.time() - start_time)
+        # solutions.append(perm)
+        #solutions = solutions + 1
+        #print(solutions)
+        exit()
+
+    for k in range(1, 4):
+
+        perm.append(k)
+
+        if can_be_extended_to_solution(perm, n, target):
+            # print('Vai recursar. perm = ')
+            # print(perm)
+            # print (' n= ')
+            # print (n)
+            extend(perm, n, target)
+
+        perm.pop()
 
 
-def extend(perm, n):
 
-    global tree_pointer
+
+
+
+def extend_old(perm, n):
 
     if len(perm) == pow(n, 2):
 
@@ -87,11 +124,11 @@ def extend(perm, n):
             exit()
 
 
-        aux = pow(n, 2) - 1
+        #aux = pow(n, 2) - 1
 
-        if tree_pointer == aux:
-            print('Nao ha solucao')
-            exit()
+        #if tree_pointer == aux:
+        #    print('Nao ha solucao')
+        #    exit()
 
         while (aux >= 0):
 
@@ -203,4 +240,4 @@ def extend(perm, n):
 
 start_time = time.time()
 
-extend(perm = [], n = 5 )
+extend(perm = [], n = 5, target = 16 )
